@@ -1,8 +1,4 @@
-import datetime
-import os
-from threading import Thread
-import time
-from flask import Flask, jsonify, render_template, redirect, request, url_for, Response
+from flask import Flask, render_template, request, Response
 import numpy as np
 import cv2
 from pyzbar.pyzbar import decode

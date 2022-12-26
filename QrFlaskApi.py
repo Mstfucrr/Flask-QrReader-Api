@@ -37,8 +37,6 @@ def gen_frames():  # generate frame by frame from camera
                 pts = np.array([barcode.polygon],np.int32)
                 pts = pts.reshape((-1,1,2))
                 cv2.polylines(frame,[pts],True, (0,250,150) ,5)
-                # x,y,w,h = barcode.rect
-                # cv2.putText(frame,result,(40,40),cv2.FONT_HERSHEY_PLAIN,0.9,(0,250,150),2)
             try:
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
@@ -51,34 +49,6 @@ def gen_frames():  # generate frame by frame from camera
 
         else:
             pass
-
-@app.route('/qr')
-def qr():
-    camera = cv2.VideoCapture(0)
-    camera.set(3,640)
-    camera.set(4,480)
-    global result
-    i = 1
-    while i == 1:
-        success, cam = camera.read()
-        if success:
-            for barcode in decode(cam):
-                result = barcode.data.decode('utf-8')
-                pil_im = Image.fromarray(cam)
-                draw = ImageDraw.Draw(pil_im)
-                font = ImageFont.truetype("arial.ttf", 40)
-                
-                draw.text((60, 40), result, font=font, fill=(0, 250, 150))
-                cam = np.array(pil_im)
-              
-                # cv2.destroyAllWindows()
-                # camera.release()
-                # return jsonify({'result': result})
-            cv2.imshow('Result', cam)
-            cv2.waitKey(1)
-    
-    return {'response': result}
-
 
 @app.route('/')
 def index():

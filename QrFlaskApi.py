@@ -49,19 +49,14 @@ def gen_frames():  # generate frame by frame from camera
 
         else:
             pass
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-    
-    
+   
 @app.route('/video_feed',methods=['POST','GET'])
 def video_feed():
     global camera,result
     camera = cv2.VideoCapture(0)
     return Response( gen_frames() , mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/requests',methods=['POST','GET'])
+@app.route('/requests',methods=['POST'])
 def tasks():
     response=''
     global switch,camera
@@ -76,13 +71,6 @@ def tasks():
             return {'response': response}
         else:
             return {'response': 'No QR code detected'}
- 
-    elif request.method=='GET':
-        switch=0
-        camera.release()
-        cv2.destroyAllWindows()
-        return render_template('index.html',switch=switch)
-    return render_template('index.html',switch=switch)
 
 
 if __name__ == '__main__':
